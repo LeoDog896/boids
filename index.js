@@ -164,7 +164,7 @@ Boids.prototype.tick = function() {
 function hypot(a, b) {
   a = Math.abs(a)
   b = Math.abs(b)
-  var lo = Math.min(a, b)
-  var hi = Math.max(a, b)
+  const lo = Math.min(a, b)
+  const hi = Math.max(a, b)
   return hi + 3 * lo / 32 + Math.max(0, 2 * lo - hi) / 8 + Math.max(0, 4 * lo - hi) / 16
 }

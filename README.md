@@ -1,30 +1,19 @@
-# boids #
+# boids
 
-A lightweight JavaScript implementation of
-[boids](http://en.wikipedia.org/wiki/Boids). Its "API" is a little limited,
-but it's reasonably performant - my MacBook ran the demo with 1,000 boids at
-60 frames per second.
+A fork of https://github.com/hughsk/boids
 
-[check out the demo](http://hughsk.github.io/boids)
-
-I used an earlier, hastier version for the flocks in
-[grow.](http://github.com/hughsk/ludum-dare-26)
-
-## Installation ##
-
-For use with [browserify](http://browserify.org):
-
-``` bash
-npm install boids
+## Installation
+```bash
+yarn add boids
 ```
 
 ## Usage ##
 
 ``` javascript
-var boids = require('boids')
-  , raf = require('raf')
+import boids from 'boids'
+import raf from 'raf'
 
-var flock = boids({
+const flock = boids({
   boids: 50,              // The amount of boids to use
   speedLimit: 0,          // Max steps to take per tick
   accelerationLimit: 1,   // Max acceleration per tick
@@ -89,7 +78,7 @@ Note that you can use a negative value for `force` to repel boids instead of
 attracting them. Again, it should be safe to modify, add and remove these
 arrays without any surprises.
 
-## Benchmark ##
+## Benchmark
 
 Running `benchmark.js` yielded the following results in Node:
 
