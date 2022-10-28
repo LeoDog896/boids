@@ -3,41 +3,42 @@
 A fork of https://github.com/hughsk/boids
 
 ## Installation
+
 ```bash
 yarn add boids
 ```
 
-## Usage ##
+## Usage
 
-``` javascript
-import boids from 'boids'
-import raf from 'raf'
+```javascript
+import boids from "boids";
+import raf from "raf";
 
 const flock = boids({
-  boids: 50,              // The amount of boids to use
-  speedLimit: 0,          // Max steps to take per tick
-  accelerationLimit: 1,   // Max acceleration per tick
+  boids: 50, // The amount of boids to use
+  speedLimit: 0, // Max steps to take per tick
+  accelerationLimit: 1, // Max acceleration per tick
   separationDistance: 60, // Radius at which boids avoid others
   alignmentDistance: 180, // Radius at which boids align with others
-  choesionDistance: 180,  // Radius at which boids approach others
-  separationForce: 0.15,  // Speed to avoid at
-  alignmentForce: 0.25,   // Speed to align with other boids
-  choesionForce: 0.1,     // Speed to move towards other boids
-  attractors: []
-})
+  choesionDistance: 180, // Radius at which boids approach others
+  separationForce: 0.15, // Speed to avoid at
+  alignmentForce: 0.25, // Speed to align with other boids
+  choesionForce: 0.1, // Speed to move towards other boids
+  attractors: [],
+});
 
-raf(window).on('data', function() {
-  ctx.fillStyle = 'black'
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
-  ctx.fillStyle = 'white'
-  ctx.save()
-  ctx.translate(-canvas.width/2, -canvas.height/2)
-  flock.tick()
-  flock.boids.forEach(function(boid) {
-    ctx.fillRect(boid[0], boid[1], 1, 1)
-  })
-  ctx.restore()
-})
+raf(window).on("data", function () {
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "white";
+  ctx.save();
+  ctx.translate(-canvas.width / 2, -canvas.height / 2);
+  flock.tick();
+  flock.boids.forEach(function (boid) {
+    ctx.fillRect(boid[0], boid[1], 1, 1);
+  });
+  ctx.restore();
+});
 ```
 
 **flock = boids([options])**
@@ -52,8 +53,8 @@ you should be calling this on each frame.
 All of your boids are stored as an array of arrays, with each
 array containing the following variables for a single boid:
 
-``` javascript
-[xPosition, yPosition, xSpeed, ySpeed, xAcceleration, yAcceleration]
+```javascript
+[xPosition, yPosition, xSpeed, ySpeed, xAcceleration, yAcceleration];
 ```
 
 Because the flock is just an array, it should be entirely safe for you
@@ -61,8 +62,8 @@ to add and remove elements without any unintended side effects, provided all
 of the arrays are at least 6 elements long and contain numerical values. For
 example, you can add a new boid moving at a random speed to the origin like so:
 
-``` javascript
-flock.boids.push([0, 0, Math.random()*10-5, Math.random()*10-5, 0, 0])
+```javascript
+flock.boids.push([0, 0, Math.random() * 10 - 5, Math.random() * 10 - 5, 0, 0]);
 ```
 
 **flock.attractors**
@@ -70,8 +71,8 @@ flock.boids.push([0, 0, Math.random()*10-5, Math.random()*10-5, 0, 0])
 You can use attractors to control the flow of the boids - essentially,
 providing them with goals and obstacles. Each attractor contains:
 
-``` javascript
-[xPosition, yPosition, radius, force]
+```javascript
+[xPosition, yPosition, radius, force];
 ```
 
 Note that you can use a negative value for `force` to repel boids instead of
