@@ -1,25 +1,26 @@
 {
   "name": "boids",
   "version": "2.0.0",
-  "dependencies": {
-    "inherits": "~1.0.0"
-  },
   "devDependencies": {
-    "beefy": "~0.1.0",
-    "browserify": "~2.13.2",
     "debounce": "0.0.2",
+    "events": "^3.3.0",
     "fps": "0.0.3",
+    "parcel": "^2.7.0",
     "prettier": "2.7.1",
     "raf": "0.0.2",
     "ticker": "0.0.1"
   },
-  "gitHead": "d450d79f6388cb739e55a84b11c5b38660897ac1",
-  "description": "ERROR: No README.md file found!",
-  "main": "index.js",
+  "description": "Boids library for Node.JS",
+  "source": "src/index.ts",
+  "main": "dist/main.js",
+  "module": "dist/module.js",
+  "types": "dist/types.d.ts",
   "scripts": {
     "prepublish": "node_modules/.bin/browserify demo.js -o bundle.js",
-    "start": "node_modules/.bin/beefy demo.js:bundle.js",
-    "format": "prettier --write ."
+    "dev": "parcel index.html",
+    "format": "prettier --write .",
+    "watch": "parcel watch",
+    "build": "parcel build"
   },
   "repository": {
     "type": "git",

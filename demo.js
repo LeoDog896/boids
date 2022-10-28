@@ -1,9 +1,9 @@
-var fps = require("fps"),
-  ticker = require("ticker"),
-  debounce = require("debounce"),
-  Boids = require("./");
+import fps from "fps";
+import ticker from "ticker";
+import debounce from "debounce";
+import Boids from "./src/index";
 
-var attractors = [
+let attractors = [
   [
     Infinity, // x
     Infinity, // y
@@ -12,9 +12,9 @@ var attractors = [
   ],
 ];
 
-var canvas = document.createElement("canvas"),
+const canvas = document.createElement("canvas"),
   ctx = canvas.getContext("2d"),
-  boids = Boids({
+  boids = new Boids({
     boids: 150,
     speedLimit: 2,
     accelerationLimit: 0.5,
