@@ -10,16 +10,16 @@
       type="text/css"
     />
     <style type="text/css">
-      html,
-      body {
+      html, body {
         margin: 0;
         padding: 0;
+        overflow-y: hidden;
         font-family: "Open Sans", Helvetica, Arial, sans-serif;
         color: #543d5e;
         color: rgba(84, 61, 94, 0.75);
         background-color: #fff1eb;
       }
-      #title {
+      h1 {
         color: #543d5e;
         font-size: 2.5em;
         color: rgba(84, 61, 94, 0.9);
@@ -32,7 +32,7 @@
         text-decoration: none;
         border-bottom: 1px dotted #543d5e;
       }
-      #text {
+      main {
         position: absolute;
         max-width: 300px;
         top: 16px;
@@ -47,8 +47,8 @@
     </style>
   </head>
   <body>
-    <article role="main" id="text">
-      <h1 id="title">boids</h1>
+    <main>
+      <h1>boids</h1>
       <div id="description">
         <p>
           This is a lightweight 2D JavaScript implementation of Craig Reynolds'
@@ -62,10 +62,11 @@
           simulated at <strong data-fps>60</strong> frames per second.
         </p>
         <p class="source">
-          <a href="http://github.com/hughsk/boids">Source on GitHub</a>
+          <a href="http://github.com/LeoDog896/boids">Source on GitHub</a>
         </p>
       </div>
-    </article>
-    <script type="module" src="demo.js"></script>
+    </main>
+    <canvas></canvas>
+    <script type="module" src="demo.ts"></script>
   </body>
 </html>

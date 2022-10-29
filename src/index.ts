@@ -1,16 +1,26 @@
 import { EventEmitter } from "events";
-let POSITIONX = 0;
-let POSITIONY = 1;
-let SPEEDX = 2;
-let SPEEDY = 3;
-let ACCELERATIONX = 4;
-let ACCELERATIONY = 5;
+const POSITIONX = 0;
+const POSITIONY = 1;
+const SPEEDX = 2;
+const SPEEDY = 3;
+const ACCELERATIONX = 4;
+const ACCELERATIONY = 5;
 
 interface BoidsOptions {
   speedLimit?: number;
   accelerationLimit?: number;
   separationDistance?: number;
+  separationForce?: number;
+  cohesionForce?: number;
+  alignmentForce?: number;
+  cohesionDistance?: number;
+  alignmentDistance?: number;
+  attractors?: Attractor[]
+  boids?: number;
 }
+
+type Boid = [number, number, number, number, number, number]
+type Attractor = [number, number, number, number]
 
 export default class Boids extends EventEmitter {
   speedLimitRoot: number;
@@ -20,8 +30,13 @@ export default class Boids extends EventEmitter {
   separationDistance: number;
   alignmentDistance: number;
   cohesionDistance: number;
+  separationForce: number;
+  cohesionForce: number;
+  alignmentForce: number;
+  attractors: Attractor[]
+  boids: Boid[]
 
-  constructor(opts: BoidsOptions = {}, callback = function() {}) {
+  constructor(opts: BoidsOptions = {}, callback: (boids: Boid[]) => void = () => void 0) {
     super()
     EventEmitter.call(this);
 
@@ -34,11 +49,12 @@ export default class Boids extends EventEmitter {
     this.cohesionDistance = Math.pow(opts.cohesionDistance || 180, 2);
     this.separationForce = opts.separationForce || 0.15;
     this.cohesionForce = opts.cohesionForce || 0.1;
-    this.alignmentForce = opts.alignmentForce || opts.alignment || 0.25;
+    this.alignmentForce = opts.alignmentForce || 0.25;
     this.attractors = opts.attractors || [];
+    this.boids = []
 
-    let boids = (this.boids = []);
-    for (var i = 0, l = opts.boids === undefined ? 50 : opts.boids; i < l; i += 1) {
+    const boids = this.boids;
+    for (let i = 0, l = opts.boids === undefined ? 50 : opts.boids; i < l; i += 1) {
       boids[i] = [
         Math.random() * 25,
         Math.random() * 25,
@@ -54,7 +70,35 @@ export default class Boids extends EventEmitter {
     });
   }
   tick() {
-    var boids = this.boids, sepDist = this.separationDistance, sepForce = this.separationForce, cohDist = this.cohesionDistance, cohForce = this.cohesionForce, aliDist = this.alignmentDistance, aliForce = this.alignmentForce, speedLimit = this.speedLimit, accelerationLimit = this.accelerationLimit, accelerationLimitRoot = this.accelerationLimitRoot, speedLimitRoot = this.speedLimitRoot, size = boids.length, current = size, sforceX, sforceY, cforceX, cforceY, aforceX, aforceY, spareX, spareY, attractors = this.attractors, attractorCount = attractors.length, attractor, distSquared, currPos, length, target, ratio;
+    const boids = this.boids;
+    const sepDist = this.separationDistance
+    const sepForce = this.separationForce
+    const cohDist = this.cohesionDistance
+    const cohForce = this.cohesionForce
+    const aliDist = this.alignmentDistance
+    const aliForce = this.alignmentForce
+    const speedLimit = this.speedLimit
+    const accelerationLimit = this.accelerationLimit
+    const accelerationLimitRoot = this.accelerationLimitRoot
+    const speedLimitRoot = this.speedLimitRoot
+    const size = boids.length
+    let current = size
+    let sforceX: number
+    let sforceY: number
+    let cforceX: number
+    let cforceY: number
+    let aforceX: number
+    let aforceY: number
+    let spareX: number
+    let spareY: number
+    const attractors = this.attractors
+    const attractorCount = attractors.length
+    let attractor: Attractor
+    let distSquared: number
+    let currPos: Boid
+    let length: number
+    let target: number
+    let ratio: number
 
     while (current--) {
       sforceX = 0;
@@ -161,7 +205,7 @@ export default class Boids extends EventEmitter {
 
 // double-dog-leg hypothenuse approximation
 // http://forums.parallax.com/discussion/147522/dog-leg-hypotenuse-approximation
-function hypot(a, b) {
+function hypot(a: number, b: number) {
   a = Math.abs(a);
   b = Math.abs(b);
   const lo = Math.min(a, b);

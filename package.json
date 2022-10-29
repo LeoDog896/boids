@@ -2,13 +2,16 @@
   "name": "boids",
   "version": "2.0.0",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.41.0",
+    "@typescript-eslint/parser": "^5.41.0",
     "debounce": "0.0.2",
+    "eslint": "^8.26.0",
     "events": "^3.3.0",
     "fps": "0.0.3",
     "parcel": "^2.7.0",
     "prettier": "2.7.1",
-    "raf": "0.0.2",
-    "ticker": "0.0.1"
+    "ticker": "0.0.1",
+    "typescript": "^4.8.4"
   },
   "description": "Boids library for Node.JS",
   "source": "src/index.ts",
@@ -16,15 +19,16 @@
   "module": "dist/module.js",
   "types": "dist/types.d.ts",
   "scripts": {
-    "prepublish": "node_modules/.bin/browserify demo.js -o bundle.js",
     "dev": "parcel index.html",
     "format": "prettier --write .",
     "watch": "parcel watch",
-    "build": "parcel build"
+    "build": "parcel build",
+    "lint": "eslint .",
+    "benchmark": "npx ts-node --lib=dom ./benchmark.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/hughsk/boids.git"
+    "url": "git://github.com/LeoDog896/boids.git"
   },
   "keywords": [
     "boids",
