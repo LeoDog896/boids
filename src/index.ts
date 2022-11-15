@@ -1,4 +1,3 @@
-import { EventEmitter } from "events";
 const POSITIONX = 0;
 const POSITIONY = 1;
 const SPEEDX = 2;
@@ -22,7 +21,7 @@ interface BoidsOptions {
 type Boid = [number, number, number, number, number, number]
 type Attractor = [number, number, number, number]
 
-export default class Boids extends EventEmitter {
+export default class Boids extends EventTarget {
   speedLimitRoot: number;
   accelerationLimitRoot: number;
   speedLimit: number;
@@ -37,9 +36,7 @@ export default class Boids extends EventEmitter {
   boids: Boid[]
 
   constructor(opts: BoidsOptions = {}, callback: (boids: Boid[]) => void = () => void 0) {
-    super()
-    EventEmitter.call(this);
-
+    super();
     this.speedLimitRoot = opts.speedLimit || 0;
     this.accelerationLimitRoot = opts.accelerationLimit || 1;
     this.speedLimit = Math.pow(this.speedLimitRoot, 2);
@@ -65,7 +62,7 @@ export default class Boids extends EventEmitter {
       ];
     }
 
-    this.on("tick", function () {
+    this.addEventListener("tick", function () {
       callback(boids);
     });
   }
@@ -83,39 +80,25 @@ export default class Boids extends EventEmitter {
     const speedLimitRoot = this.speedLimitRoot
     const size = boids.length
     let current = size
-    let sforceX: number
-    let sforceY: number
-    let cforceX: number
-    let cforceY: number
-    let aforceX: number
-    let aforceY: number
-    let spareX: number
-    let spareY: number
     const attractors = this.attractors
     const attractorCount = attractors.length
-    let attractor: Attractor
-    let distSquared: number
-    let currPos: Boid
-    let length: number
-    let target: number
-    let ratio: number
 
     while (current--) {
-      sforceX = 0;
-      sforceY = 0;
-      cforceX = 0;
-      cforceY = 0;
-      aforceX = 0;
-      aforceY = 0;
-      currPos = boids[current];
+      let sforceX = 0;
+      let sforceY = 0;
+      let cforceX = 0;
+      let cforceY = 0;
+      let aforceX = 0;
+      let aforceY = 0;
+      let currPos = boids[current];
 
       // Attractors
-      target = attractorCount;
+      let target = attractorCount;
       while (target--) {
-        attractor = attractors[target];
-        spareX = currPos[0] - attractor[0];
-        spareY = currPos[1] - attractor[1];
-        distSquared = spareX * spareX + spareY * spareY;
+        let attractor = attractors[target];
+        let spareX = currPos[0] - attractor[0];
+        let spareY = currPos[1] - attractor[1];
+        let distSquared = spareX * spareX + spareY * spareY;
 
         if (distSquared < attractor[2] * attractor[2]) {
           length = hypot(spareX, spareY);
@@ -128,9 +111,9 @@ export default class Boids extends EventEmitter {
       while (target--) {
         if (target === current)
           continue;
-        spareX = currPos[0] - boids[target][0];
-        spareY = currPos[1] - boids[target][1];
-        distSquared = spareX * spareX + spareY * spareY;
+        let spareX = currPos[0] - boids[target][0];
+        let spareY = currPos[1] - boids[target][1];
+        let distSquared = spareX * spareX + spareY * spareY;
 
         if (distSquared < sepDist) {
           sforceX += spareX;
@@ -166,11 +149,11 @@ export default class Boids extends EventEmitter {
     // this tick
     while (current--) {
       if (accelerationLimit) {
-        distSquared =
+        let distSquared =
           boids[current][ACCELERATIONX] * boids[current][ACCELERATIONX] +
           boids[current][ACCELERATIONY] * boids[current][ACCELERATIONY];
         if (distSquared > accelerationLimit) {
-          ratio =
+          let ratio =
             accelerationLimitRoot /
             hypot(boids[current][ACCELERATIONX], boids[current][ACCELERATIONY]);
           boids[current][ACCELERATIONX] *= ratio;
@@ -182,11 +165,11 @@ export default class Boids extends EventEmitter {
       boids[current][SPEEDY] += boids[current][ACCELERATIONY];
 
       if (speedLimit) {
-        distSquared =
+        let distSquared =
           boids[current][SPEEDX] * boids[current][SPEEDX] +
           boids[current][SPEEDY] * boids[current][SPEEDY];
         if (distSquared > speedLimit) {
-          ratio =
+          let ratio =
             speedLimitRoot /
             hypot(boids[current][SPEEDX], boids[current][SPEEDY]);
           boids[current][SPEEDX] *= ratio;
@@ -198,7 +181,7 @@ export default class Boids extends EventEmitter {
       boids[current][POSITIONY] += boids[current][SPEEDY];
     }
 
-    this.emit("tick", boids);
+    this.dispatchEvent(new CustomEvent("tick", { detail: boids }));
   }
 }
 
